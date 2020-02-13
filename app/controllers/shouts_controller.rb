@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ShoutsController < ApplicationController
   def show
     @shout = Shout.find(params[:id])
@@ -15,18 +17,25 @@ class ShoutsController < ApplicationController
   end
 
   def content_from_params
-    TextShout.new(content_params)
+    case params[:shout][:content_type]
+    when 'TextShout' then TextShout.new(text_shout_content_params)
+    when 'PhotoShout' then PhotoShout.new(photo_shout_content_params)
+    end
   end
 
-  def content_params
+  def photo_shout_content_params
+    params.require(:shout).require(:content).permit(:image)
+  end
+
+  def text_shout_content_params
     params.require(:shout).require(:content).permit(:body)
   end
 
   def redirect_options_for(shout)
     if shout.persisted?
-      { notice: "Shouted Sucessfully" }
+      { notice: 'Shouted Sucessfully' }
     else
-      { alert: "Could not shout" }
+      { alert: 'Could not shout' }
     end
   end
 end
