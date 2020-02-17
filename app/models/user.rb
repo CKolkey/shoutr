@@ -24,6 +24,7 @@ class User < ApplicationRecord
   def timeline_shouts
     Shout.where(user_id: followed_user_ids + [id])
   end
+
   def like(shout)
     liked_shouts << shout
   end
