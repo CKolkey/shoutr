@@ -1,10 +1,10 @@
 <h1>Dashboard</h1>
 
-<%= shout_form_for(PhotoShout) do |form| %>
+<%= shout_form_for(TextShout) do |form| %>
   <%= form.text_field :body, placeholder: "Shout here!", required: true %>
 <% end %>
 
-<%= shout_form_for(TextShout) do |form| %>
+<%= shout_form_for(PhotoShout) do |form| %>
   <%= form.file_field :image, required: true %>
 <% end %>
 
