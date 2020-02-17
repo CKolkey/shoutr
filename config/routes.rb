@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   resource :session, only: [:create]
 
   resources :users, only: %i[create show] do
+    resources :followers, only: [:index]
     member do
       post 'follow' => 'followed_users#create'
       delete 'unfollow' => 'followed_users#destroy'

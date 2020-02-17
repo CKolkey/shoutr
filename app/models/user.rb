@@ -8,8 +8,18 @@ class User < ApplicationRecord
   has_many :likes
   has_many :liked_shouts, through: :likes, source: :shout
 
-  has_many :following_relationships, foreign_key: :follower_id, counter_cache: :followers_count
-  has_many :followed_users, through: :following_relationships, counter_cache: :followed_users_count
+  has_many :followed_user_relationships, 
+    foreign_key: :follower_id, 
+    counter_cache: :followers_count,
+    class_name: "FollowingRelationship",
+    dependent: :destroy
+  has_many :followed_users, through: :followed_user_relationships, counter_cache: :followed_users_count
+
+  has_many :follower_relationships, 
+    foreign_key: :followed_user_id, 
+    class_name: "FollowingRelationship",
+    dependent: :destroy
+  has_many :followers, through: :follower_relationships
 
   def like(shout)
     liked_shouts << shout
